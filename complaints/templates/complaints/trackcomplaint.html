@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AwazGram Complaint Flow</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fefee2;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #2c3e50;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: #2c3e50;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .steps .step {
+      background-color: #f9f9c5;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-left: 6px solid #2c3e50;
+      border-radius: 6px;
+    }
+
+    /* Progress Steps Styles */
+    .progress-container {
+      display: flex;
+      justify-content: space-between;
+      margin: 30px 0;
+      position: relative;
+    }
+
+    .progress-container::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      height: 4px;
+      width: 100%;
+      background-color: #e0e0e0;
+      z-index: 1;
+    }
+
+    .progress {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      height: 4px;
+      width: 0%;
+      background-color: #2c3e50;
+      z-index: 2;
+      transition: width 0.4s ease;
+    }
+
+    .circle {
+      background-color: white;
+      color: #999;
+      border-radius: 50%;
+      height: 30px;
+      width: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid #e0e0e0;
+      transition: all 0.4s ease;
+      z-index: 3;
+      position: relative;
+    }
+
+    .circle.active {
+      border-color: #2c3e50;
+      background-color: #2c3e50;
+      color: white;
+    }
+
+    .step-label {
+      position: absolute;
+      top: 40px;
+      font-size: 0.8rem;
+      text-align: center;
+      width: 100px;
+      left: -35px;
+      color: #666;
+    }
+
+    .step-label.active {
+      color: #2c3e50;
+      font-weight: bold;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .controls button {
+      background-color: #2c3e50;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .controls button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🛠️ Complaint Tracking – Step-by-Step</h1>
+    <button onclick="toggleSteps()" id="toggleBtn">Show Flow</button>
+
+    <!-- Progress Steps -->
+    <div class="progress-container">
+      <div class="progress" id="progress"></div>
+      <div class="circle active" data-step="1">
+        1
+        <div class="step-label active">Report Submitted</div>
+      </div>
+      <div class="circle" data-step="2">
+        2
+        <div class="step-label">Verified</div>
+      </div>
+      <div class="circle" data-step="3">
+        3
+        <div class="step-label">Resolved</div>
+      </div>
+      <div class="circle" data-step="4">
+        4
+        <div class="step-label">Feedback</div>
+      </div>
+      <div class="circle" data-step="5">
+        5
+        <div class="step-label">Performance</div>
+      </div>
+      <div class="circle" data-step="6">
+        6
+        <div class="step-label">Escalation</div>
+      </div>
+      <div class="circle" data-step="7">
+        7
+        <div class="step-label">Dashboard</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="prevBtn" onclick="prevStep()" disabled>Previous</button>
+      <button id="nextBtn" onclick="nextStep()">Next Step</button>
+    </div>
+
+    <div id="steps" class="steps" style="display: none;">
+      <div class="step"><strong>Step 1:</strong> Villager reports issue via photo or voice note. QR code is generated.</div>
+      <div class="step"><strong>Step 2:</strong> Panchayat staff scans QR and verifies complaint. Status becomes Verified.</div>
+      <div class="step"><strong>Step 3:</strong> Field worker resolves issue (road, garbage, etc.). Status updates to Resolved.</div>
+      <div class="step"><strong>Step 4:</strong> Villager gives emoji feedback (🙂😐😡). Stored offline.</div>
+      <div class="step"><strong>Step 5:</strong> ComplianceMeter tracks staff performance: SLA, breaches, trust badge.</div>
+      <div class="step"><strong>Step 6:</strong> If unresolved in 7 days, complaint auto-escalates to Block-level authority.</div>
+      <div class="step"><strong>Step 7:</strong> Printed dashboards and wall posters show complaint pressure publicly.</div>
+    </div>
+  </div>
+
+  <script>
+    function toggleSteps() {
+      const steps = document.getElementById("steps");
+      const button = document.getElementById("toggleBtn");
+
+      if (steps.style.display === "none") {
+        steps.style.display = "block";
+        button.textContent = "Hide Flow";
+      } else {
+        steps.style.display = "none";
+        button.textContent = "Show Flow";
+      }
+    }
+
+    // Progress Steps Logic
+    const circles = document.querySelectorAll('.circle');
+    const progress = document.getElementById('progress');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let currentActive = 1;
+
+    function updateProgress() {
+      // Update active circles
+      circles.forEach((circle, idx) => {
+        if (idx < currentActive) {
+          circle.classList.add('active');
+          circle.querySelector('.step-label').classList.add('active');
+        } else {
+          circle.classList.remove('active');
+          circle.querySelector('.step-label').classList.remove('active');
+        }
+      });
+
+      // Update progress bar
+      const progressPercent = ((currentActive - 1) / (circles.length - 1)) * 100;
+      progress.style.width = `${progressPercent}%`;
+
+      // Update buttons
+      if (currentActive === 1) {
+        prevBtn.disabled = true;
+      } else {
+        prevBtn.disabled = false;
+      }
+
+      if (currentActive === circles.length) {
+        nextBtn.disabled = true;
+      } else {
+        nextBtn.disabled = false;
+      }
+    }
+
+    function nextStep() {
+      currentActive++;
+      if (currentActive > circles.length) {
+        currentActive = circles.length;
+      }
+      updateProgress();
+    }
+
+    function prevStep() {
+      currentActive--;
+      if (currentActive < 1) {
+        currentActive = 1;
+      }
+      updateProgress();
+    }
+
+    // Initialize progress
+    updateProgress();
+  </script>
+</body>
+</html>

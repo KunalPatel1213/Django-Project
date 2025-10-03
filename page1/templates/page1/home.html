@@ -1,0 +1,473 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AwazGram - Village Development Platform</title>
+    <link rel="stylesheet" href="{% static 'page1/css/style.css' %}" />
+  </head>
+  <body>
+    <div class="loader-container">
+        <div class="loader-title">Village Life Gallery</div>
+        
+        <div class="image-box">
+            <img src="https://images.unsplash.com/photo-1559754417-c1304ca2f80f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dmlsbGFnZXN8ZW58MHx8MHx8fDA%3D" class="active" alt="Village landscape">
+            <img src="https://images.unsplash.com/photo-1586618770443-e6f8167fca61?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dmlsbGFnZXMlMjAlMjBwZW9wbGV8ZW58MHx8MHx8fDA%3D" alt="Village people">
+            <img src="https://media.istockphoto.com/id/1645937783/photo/excited-young-tourist-couple-running-and-holding-hands-while-exploring-the-greek-villages.jpg?s=612x612&w=0&k=20&c=Txw-sMNdrV4ZmJWg7N9pkyeAvmeZ67llwiQViCCc2e0=" alt="Tourists in village">
+            <img src="https://media.istockphoto.com/id/950563956/photo/old-man-and-girl-in-countryside.jpg?s=612x612&w=0&k=20&c=4yDN2VIiyNphzEEsgIOC4tUF0QmWvsrtkdjA6QvcdsM=" alt="Old man and girl">
+            <img src="https://media.istockphoto.com/id/1158866716/photo/senior-man-and-bamboo-craft-with-student-girl.jpg?s=612x612&w=0&k=20&c=FWmXGrziEXmEWrUBhTf8VjHHXezkrGiSlzyGZoxxb_E=" alt="Craftsmanship">
+            <img src="https://media.istockphoto.com/id/1077444246/photo/laotian-mom-walking-with-her-daughter-in-a-village-in-northern-laos.jpg?s=612x612&w=0&k=20&c=ytQiJdvTqRK27zI3FLjXEYPx2TOH6W94vD3rqbsJGxQ=" alt="Mother and daughter">
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="timer" id="timer">Loading... 0%</div>
+        <div class="completion-message" id="completionMessage">Complete! Loading gallery...</div>
+    </div>
+    <div id="mainContent" style="display: none;">
+        <header>
+      <nav class="navbar">
+        <div class="logo">AwazGram</div>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <div class="menu" id="navMenu">
+          <a href="{% url 'home' %}">Home</a>
+          <a href="{% url 'about' %}">About</a>
+          <a href="{% url 'report' %}">Report</a>
+          <a href="{% url 'track_complaint' %}">TrackComplaint</a>
+          <a href="{% url 'dashboard' %}">PublicDashboard</a>
+          <a href="{% url 'offline_help' %}">OfflineHelp</a>
+          <div class="language-toggle">
+            <button id="language-btn" onclick="toggleLanguage()">हिंदी</button>
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn" data-en="Login ▾" data-hi="लॉगिन ▾">Login ▾</button>
+            <div class="dropdown-content">
+              <a href="{% url 'login' %}" data-en="User Login" data-hi="उपयोगकर्ता लॉगिन">User Login</a>
+              <a href="{% url 'register' %}" data-en="Register" data-hi="पंजीकरण">Register</a>
+              <a href="#" data-en="Admin Login" data-hi="एडमिन लॉगिन">Admin Login</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="image-slider">
+        <img
+          src="{% static 'page1/images/Gemini_Generated_Image_idyxqcidyxqcidyx.png' %}"
+          alt="Village development image 1"
+        />
+        <img src="{% static 'page1/images/kunal1.png' %}" alt="Village development image 2" />
+        <img src="{% static 'page1/images/gao2.png' %}" alt="Village development image 3" />
+        <img src="{% static 'page1/images/nali.png' %}" alt="Village development image 4" />
+      </div>
+
+      <div class="hero-content">
+        <h1 class="hero-heading" data-en="Welcome to the AwazGram Platform" data-hi="अवाज़ग्राम प्लेटफॉर्म में आपका स्वागत है">Welcome to the AwazGram Platform</h1>
+        <p class="hero-subheading" data-en="One village, one dream. Together, let's take one more step toward cleanliness and beauty." data-hi="एक गाँव, एक सपना। आइए मिलकर स्वच्छता और सुंदरता की ओर एक और कदम बढ़ाएं।">
+          One village, one dream. Together, let's take one more step toward cleanliness and beauty.
+        </p>
+           <div class="container">
+        <button class="cta-button" id="knowMoreBtn">Know more</button>
+    </div>
+
+    <!-- Modal -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body">
+                <p>AwazGram is a citizen-first mobile platform designed to empower rural communities to report local issues and track their resolution with transparency, accountability, and emotional clarity. Built for low-connectivity environments, AwazGram blends offline-first technology with QR-based verification, emoji-driven feedback, and printed dashboards to ensure every voice is heard — and every complaint is seen through.</p>
+                
+                <h3>🔧 How AwazGram Works – Step-by-Step</h3>
+                
+                <h4>• Complaint Capture</h4>
+                <p>Villagers report issues using photos or voice notes — even without internet.<br>
+                Each complaint is saved locally and assigned a unique QR code for traceability.</p>
+                
+                <h4>• Panchayat Verification</h4>
+                <p>Local staff scan the QR code to verify the complaint.<br>
+                The system updates the status to "Verified" and logs the timestamp.</p>
+                
+                <h4>• Resolution by Field Staff</h4>
+                <p>Assigned workers resolve the issue (e.g., road repair, sanitation, electricity).<br>
+                Once completed, the status is updated to "Resolved" on the dashboard.</p>
+                
+                <h4>• Feedback Collection</h4>
+                <p>Citizens provide feedback using emoji-based responses (🙂😐😡).<br>
+                Feedback is stored offline and synced when connectivity is available.</p>
+                
+                <h4>• Compliance Tracking</h4>
+                <p>Staff performance is monitored through the ComplianceMeter, showing:<br>
+                - % of timely resolutions<br>
+                - SLA breaches<br>
+                - Trust badges for high performers</p>
+                
+                <h4>• Escalation Logic</h4>
+                <p>If a complaint remains unresolved for 7 days, it auto-escalates to Block-level authorities.<br>
+                The dashboard reflects escalation status and triggers alerts.</p>
+                
+                <h4>• Printed Dashboards & Public Displays</h4>
+                <p>Monthly printed dashboards are displayed in Panchayat offices, showing staff scores and complaint status.<br>
+                Unresolved complaints are pasted on public walls with QR codes to build pressure and transparency.</p>
+                
+                <h3>📊 Governance Features</h3>
+                <ul>
+                    <li>Service Level Agreements (SLAs) for each complaint category</li>
+                    <li>Offline-first architecture for low-connectivity regions</li>
+                    <li>QR-based verification for trust and traceability</li>
+                    <li>Emoji feedback for emotional clarity</li>
+                    <li>Escalation flow for accountability</li>
+                    <li>Public visibility through printed dashboards and wall posters</li>
+                </ul>
+                
+                <h3>🌱 Why AwazGram Matters</h3>
+                <p>AwazGram transforms grievance redressal from a hidden process into a visible, emotionally resonant journey. It gives villagers the power to report, track, and respond — while holding staff accountable through transparent metrics and public feedback. It's not just an app. It's a trust-building tool for rural governance.</p>
+            </div>
+        </div>
+    </div>
+      </div>
+    </section>
+
+    <div class="about-section">
+      <div class="about-image">
+        <img src="{% static 'page1/images/kunal1.png' %}" alt="AwazGram Logo" />
+      </div>
+      <div class="about-content">
+        <h1 data-en="About Us" data-hi="हमारे बारे में">About Us</h1>
+        <p data-en="AwazGram is a voice-driven platform built for rural citizens to raise local issues even without internet. Whether it's a broken road, water leakage, or sanitation problems, villagers can report complaints using photos, voice notes, and QR codes.<br><br>This system works offline, tracks every grievance, and builds public accountability through printed dashboards and transparent tracking. It's designed for places where digital infrastructure is weak, but the need for justice is strong.<br><br><em>'Awaz wahi jo suni jaaye aur samasya wahi jo samjhi jaaye.'</em><br><br>AwazGram brings emotional intelligence, traceability, and trust to village-level governance so that every voice is heard, and every issue is seen." 
+           data-hi="अवाज़ग्राम एक आवाज-आधारित प्लेटफॉर्म है जो ग्रामीण नागरिकों के लिए बनाया गया है ताकि वे बिना इंटरनेट के भी स्थानीय मुद्दों को उठा सकें। चाहे वह टूटी सड़क हो, पानी का रिसाव हो, या स्वच्छता संबंधी समस्याएं हों, ग्रामीण फोटो, वॉयस नोट्स और क्यूआर कोड का उपयोग करके शिकायतें दर्ज कर सकते हैं।<br><br>यह सिस्टम ऑफलाइन काम करता है, हर शिकायत को ट्रैक करता है, और मुद्रित डैशबोर्ड और पारदर्शी ट्रैकिंग के माध्यम से सार्वजनिक जवाबदेही बनाता है। यह उन स्थानों के लिए डिज़ाइन किया गया है जहां डिजिटल बुनियादी ढांचा कमजोर है, लेकिन न्याय की आवश्यकता मजबूत है।<br><br><em>'आवाज़ वही जो सुनी जाए और समस्या वही जो समझी जाए।'</em><br><br>अवाज़ग्राम ग्राम स्तरीय शासन में भावनात्मक बुद्धिमत्ता, ट्रेसबिलिटी और विश्वास लाता है ताकि हर आवाज सुनी जाए, और हर मुद्दा देखा जाए।">
+          <strong>AwazGram</strong> is a voice-driven platform built for rural citizens to raise local issues even without internet. Whether it's a broken road, water leakage, or sanitation problems, villagers can report complaints using photos, voice notes, and QR codes.
+          <br /><br />
+          This system works offline, tracks every grievance, and builds public accountability through printed dashboards and transparent tracking. It's designed for places where digital infrastructure is weak, but the need for justice is strong.
+          <br /><br />
+          <em>"Awaz wahi jo suni jaaye aur samasya wahi jo samjhi jaaye."</em>
+          <br /><br />
+          AwazGram brings emotional intelligence, traceability, and trust to village-level governance so that every voice is heard, and every issue is seen.
+        </p>
+      </div>
+    </div>
+
+    <div class="working-section">
+        <div class="working-summary">
+            <h2 data-en="How It Works" data-hi="यह कैसे काम करता है">How It Works</h2>
+            <p data-en="Just like that — villager reports, QR gets generated, staff verifies, issue resolves, feedback flows, and compliance gets tracked." 
+               data-hi="बस ऐसे ही — ग्रामीण रिपोर्ट करते हैं, क्यूआर कोड जनरेट होता है, स्टाफ सत्यापित करता है, समस्या का समाधान होता है, फीडबैक आता है, और अनुपालन ट्रैक किया जाता है।">
+                Just like that — villager reports, QR gets generated, staff verifies,
+                issue resolves, feedback flows, and compliance gets tracked.
+            </p>
+            <div class="step-indicators">
+                <span class="step active" data-step="1" data-en="Report" data-hi="रिपोर्ट">Report</span>
+                <span class="step" data-step="2" data-en="QR Code" data-hi="क्यूआर कोड">QR Code</span>
+                <span class="step" data-step="3" data-en="Verification" data-hi="सत्यापन">Verification</span>
+                <span class="step" data-step="4" data-en="Resolution" data-hi="समाधान">Resolution</span>
+                <span class="step" data-step="5" data-en="Feedback" data-hi="प्रतिक्रिया">Feedback</span>
+                <span class="step" data-step="6" data-en="Tracking" data-hi="ट्रैकिंग">Tracking</span>
+                <span class="step" data-step="7" data-en="Completion" data-hi="पूर्णता">Completion</span>
+            </div>
+            <div class="carousel-controls">
+                <button class="control-btn" id="prev-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="control-btn" id="play-pause-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="play-icon">
+                        <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                    </svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="pause-icon" style="display: none;">
+                        <rect x="6" y="5" width="4" height="14" fill="currentColor"/>
+                        <rect x="14" y="5" width="4" height="14" fill="currentColor"/>
+                    </svg>
+                </button>
+                <button class="control-btn" id="next-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="carousel-wrapper">
+            <div class="carousel-track">
+                <div class="carousel-slide active" data-step="1">
+                    <div class="slide-content">
+                        <div class="step-number">Step 1</div>
+                        <h3 data-en="Villager Reports" data-hi="ग्रामीण रिपोर्ट करते हैं">Villager Reports</h3>
+                        <p data-en="Villagers report issues through our simple interface, providing details and location information." 
+                           data-hi="ग्रामीण हमारे सरल इंटरफेस के माध्यम से समस्याओं की रिपोर्ट करते हैं, विवरण और स्थान की जानकारी प्रदान करते हैं।">
+                            Villagers report issues through our simple interface, providing details and location information.
+                        </p>
+                    </div>
+                    <div class="slide-image">
+                        <img src="{% static 'page1/images/step1.png' %}" alt="Step 1">
+                    </div>
+                </div>
+                <div class="carousel-slide" data-step="2">
+                    <div class="slide-content">
+                        <div class="step-number">Step 2</div>
+                        <h3 data-en="QR Code Generated" data-hi="क्यूआर कोड जनरेट होता है">QR Code Generated</h3>
+                        <p data-en="System automatically generates a unique QR code for tracking and identification purposes." 
+                           data-hi="सिस्टम स्वचालित रूप से ट्रैकिंग और पहचान के उद्देश्य से एक अद्वितीय क्यूआर कोड जनरेट करता है।">
+                            System automatically generates a unique QR code for tracking and identification purposes.
+                        </p>
+                    </div>
+                    <div class="slide-image">
+                        <img src="{% static 'page1/images/step2.png' %}" alt="Step 2">
+                    </div>
+                </div>
+                <div class="carousel-slide" data-step="3">
+                    <div class="slide-content">
+                        <div class="step-number">Step 3</div>
+                        <h3 data-en="Staff Verification" data-hi="स्टाफ सत्यापन">Staff Verification</h3>
+                        <p data-en="Our team verifies the reported issue and assigns it to the appropriate department." 
+                           data-hi="हमारी टीम रिपोर्ट की गई समस्या को सत्यापित करती है और इसे उचित विभाग को सौंपती है।">
+                            Our team verifies the reported issue and assigns it to the appropriate department.
+                        </p>
+                    </div>
+                    <div class="slide-image">
+                        <img src="{% static 'page1/images/Step 5 .png' %}" alt="Step 3">
+                    </div>
+                </div>
+                <div class="carousel-slide" data-step="4">
+                    <div class="slide-content">
+                        <div class="step-number">Step 4</div>
+                        <h3 data-en="Issue Resolution" data-hi="समस्या का समाधान">Issue Resolution</h3>
+                        <p data-en="Skilled professionals address and resolve the reported issue efficiently." 
+                           data-hi="कुशल पेशेवर रिपोर्ट की गई समस्या का कुशलतापूर्वक समाधान करते हैं।">
+                            Skilled professionals address and resolve the reported issue efficiently.
+                        </p>
+                    </div>
+                    <div class="slide-image">
+                        <img src="{% static 'page1/images/Resolution.png' %}" alt="Step 4">
+                    </div>
+                </div>
+                <div class="carousel-slide" data-step="5">
+                    <div class="slide-content">
+                        <div class="step-number">Step 5</div>
+                        <h3 data-en="Feedback Collection" data-hi="प्रतिक्रिया संग्रह">Feedback Collection</h3>
+                        <p data-en="We collect feedback from villagers to ensure satisfaction and improve our services." 
+                           data-hi="हम संतुष्टि सुनिश्चित करने और अपनी सेवाओं में सुधार करने के लिए ग्रामीणों से प्रतिक्रिया एकत्र करते हैं।">
+                            We collect feedback from villagers to ensure satisfaction and improve our services.
+                        </p>
+                    </div>
+                    <div class="slide-image">
+                        <img src="{% static 'page1/images/step3.png' %}" alt="Step 5">
+                    </div>
+                </div>
+                <div class="carousel-slide" data-step="6">
+                    <div class="slide-content">
+                        <div class="step-number">Step 6</div>
+                        <h3 data-en="Compliance Tracking" data-hi="अनुपालन ट्रैकिंग">Compliance Tracking</h3>
+                        <p data-en="System tracks compliance metrics and generates reports for transparency." 
+                           data-hi="सिस्टम अनुपालन मेट्रिक्स को ट्रैक करता है और पारदर्शिता के लिए रिपोर्ट जनरेट करता है।">
+                            System tracks compliance metrics and generates reports for transparency.
+                        </p>
+                    </div>
+                    <div class="slide-image">
+                        <img src="{% static 'page1/images/step4.png' %}" alt="Step 6">
+                    </div>
+                </div>
+                <div class="carousel-slide" data-step="7">
+                    <div class="slide-content">
+                        <div class="step-number">Step 7</div>
+                        <h3 data-en="Process Completion" data-hi="प्रक्रिया पूर्णता">Process Completion</h3>
+                        <p data-en="The issue is marked as resolved and the case is closed with all documentation." 
+                           data-hi="समस्या को हल के रूप में चिह्नित किया जाता है और मामला सभी दस्तावेजों के साथ बंद कर दिया जाता है।">
+                            The issue is marked as resolved and the case is closed with all documentation.
+                        </p>
+                    </div>
+                    <div class="slide-image">
+                        <img src="{% static 'page1/images/step7.png' %}" alt="Step 7">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="features-section">
+      <h1 data-en="🌟 Features of AwazGram" data-hi="🌟 अवाज़ग्राम की विशेषताएं">🌟 Features of AwazGram</h1>
+
+      <div class="features-grid">
+        <div class="feature-box">
+          <h2 data-en="📸 Photo Complaint" data-hi="📸 फोटो शिकायत">📸 Photo Complaint</h2>
+          <p data-en="Click photo of the issue and submit it easily — even without internet." 
+             data-hi="समस्या की फोटो खींचें और इसे आसानी से सबमिट करें — बिना इंटरनेट के भी।">
+            Click photo of the issue and submit it easily — even without internet.
+          </p>
+        </div>
+
+        <div class="feature-box">
+          <h2 data-en="🎙️ Voice Note Reporting" data-hi="🎙️ वॉयस नोट रिपोर्टिंग">🎙️ Voice Note Reporting</h2>
+          <p data-en="Speak your complaint instead of typing — perfect for low-literacy users." 
+             data-hi="टाइप करने के बजाय अपनी शिकायत बोलें — कम साक्षरता वाले उपयोगकर्ताओं के लिए आदर्श।">
+            Speak your complaint instead of typing — perfect for low-literacy users.
+          </p>
+        </div>
+
+        <div class="feature-box">
+          <h2 data-en="📶 Offline Mode" data-hi="📶 ऑफलाइन मोड">📶 Offline Mode</h2>
+          <p data-en="Works without internet. Complaints are saved locally and synced later." 
+             data-hi="बिना इंटरनेट के काम करता है। शिकायतें स्थानीय रूप से सहेजी जाती हैं और बाद में सिंक की जाती हैं।">
+            Works without internet. Complaints are saved locally and synced later.
+          </p>
+        </div>
+
+        <div class="feature-box">
+          <h2 data-en="🔳 QR Code Ticket" data-hi="🔳 क्यूआर कोड टिकट">🔳 QR Code Ticket</h2>
+          <p data-en="Each complaint gets a QR code — show it at Panchayat for verification." 
+             data-hi="प्रत्येक शिकायत को एक क्यूआर कोड मिलता है — सत्यापन के लिए इसे पंचायत में दिखाएं।">
+            Each complaint gets a QR code — show it at Panchayat for verification.
+          </p>
+        </div>
+
+        <div class="feature-box">
+          <h2 data-en="📍 GPS Location Tag" data-hi="📍 जीपीएस लोकेशन टैग">📍 GPS Location Tag</h2>
+          <p data-en="Auto-tags your location to help track where issues are coming from." 
+             data-hi="समस्याएं कहाँ से आ रही हैं, इसे ट्रैक करने में मदद के लिए आपके स्थान को स्वचालित रूप से टैग करता है।">
+            Auto-tags your location to help track where issues are coming from.
+          </p>
+        </div>
+
+        <div class="feature-box">
+          <h2 data-en="🔁 Repeat Detection" data-hi="🔁 पुनरावृत्ति पहचान">🔁 Repeat Detection</h2>
+          <p data-en="System highlights issues that keep coming back — for better planning." 
+             data-hi="सिस्टम उन समस्याओं को हाइलाइट करता है जो बार-बार आती हैं — बेहतर योजना के लिए।">
+            System highlights issues that keep coming back — for better planning.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sla-section">
+      <div class="container">
+        <header>
+          <h1 data-en="Service Level Agreements" data-hi="सेवा स्तर समझौते">Service Level Agreements</h1>
+          <div class="intro-text">
+            <p data-en="AwazGram's grievance system operates based on the number of complaints resolved by the Panchayat, with strict adherence to Service Level Agreements (SLAs) and a focus on the emotional satisfaction of the complainant. Each complaint is prioritized according to its category and urgency. Most grievances are registered instantly through photo or voice note, and action is typically initiated within 24–48 hours of local synchronization." 
+               data-hi="अवाज़ग्राम की शिकायत प्रणाली पंचायत द्वारा हल की गई शिकायतों की संख्या के आधार पर संचालित होती है, जिसमें सेवा स्तर समझौतों (एसएलए) का सख्ती से पालन किया जाता है और शिकायतकर्ता की भावनात्मक संतोष पर ध्यान केंद्रित किया जाता है। प्रत्येक शिकायत को उसकी श्रेणी और तात्कालिकता के अनुसार प्राथमिकता दी जाती है। अधिकांश शिकायतें फोटो या वॉयस नोट के माध्यम से तुरंत पंजीकृत की जाती हैं, और स्थानीय सिंक्रनाइज़ेशन के 24-48 घंटों के भीतर आम तौर पर कार्रवाई शुरू कर दी जाती है।">
+              AwazGram's grievance system operates based on the number of complaints resolved by the Panchayat, with strict adherence to Service Level Agreements (SLAs) and a focus on the emotional satisfaction of the complainant. Each complaint is prioritized according to its category and urgency. Most grievances are registered instantly through photo or voice note, and action is typically initiated within 24–48 hours of local synchronization.
+            </p>
+
+            <p data-en="The system includes a detailed escalation flow — if a complaint is not resolved within 7 days, it is automatically escalated to the Block-level authority for further action. Every complaint is backed by a QR code for verification, and its status is updated on the dashboard as: Pending, Verified, Resolved, or Escalated." 
+               data-hi="सिस्टम में एक विस्तृत एस्केलेशन फ्लो शामिल है — यदि कोई शिकायत 7 दिनों के भीतर हल नहीं होती है, तो इसे आगे की कार्रवाई के लिए स्वचालित रूप से ब्लॉक-स्तरीय प्राधिकारी को एस्केलेट कर दिया जाता है। प्रत्येक शिकायत सत्यापन के लिए एक क्यूआर कोड द्वारा समर्थित होती है, और इसकी स्थिति डैशबोर्ड पर अपडेट की जाती है: लंबित, सत्यापित, हल, या एस्केलेटेड।">
+              The system includes a detailed escalation flow — if a complaint is not resolved within 7 days, it is automatically escalated to the Block-level authority for further action. Every complaint is backed by a QR code for verification, and its status is updated on the dashboard as: Pending, Verified, Resolved, or Escalated.
+            </p>
+          </div>
+        </header>
+
+        <div class="sla-dashboard">
+          <div class="sla-card">
+            <div class="sla-icon">📋</div>
+            <h3 data-en="Complaint" data-hi="शिकायत">Complaint</h3>
+            <div class="time-display">24 hrs</div>
+            <div class="sla-details">
+              <h4 data-en="Complaint Resolution" data-hi="शिकायत समाधान">Complaint Resolution</h4>
+              <p data-en="Initial response and acknowledgment of complaints within 24 hours of registration." 
+                 data-hi="पंजीकरण के 24 घंटों के भीतर शिकायतों की प्रारंभिक प्रतिक्रिया और स्वीकृति।">
+                Initial response and acknowledgment of complaints within 24 hours of registration.
+              </p>
+              <div class="highlight" data-en="SLA: 24 hours" data-hi="एसएलए: 24 घंटे">SLA: 24 hours</div>
+            </div>
+          </div>
+
+          <div class="sla-card">
+            <div class="sla-icon">✅</div>
+            <h3 data-en="Verification" data-hi="सत्यापन">Verification</h3>
+            <div class="time-display">48 hrs</div>
+            <div class="sla-details">
+              <h4 data-en="Verification Process" data-hi="सत्यापन प्रक्रिया">Verification Process</h4>
+              <p data-en="Verification of complaint details and assignment to appropriate department within 48 hours." 
+                 data-hi="48 घंटों के भीतर शिकायत विवरण का सत्यापन और उचित विभाग को असाइनमेंट।">
+                Verification of complaint details and assignment to appropriate department within 48 hours.
+              </p>
+              <div class="highlight" data-en="SLA: 48 hours" data-hi="एसएलए: 48 घंटे">SLA: 48 hours</div>
+            </div>
+          </div>
+
+          <div class="sla-card">
+            <div class="sla-icon">🔧</div>
+            <h3 data-en="Resolution" data-hi="समाधान">Resolution</h3>
+            <div class="time-display">7 Days</div>
+            <div class="sla-details">
+              <h4 data-en="Problem Resolution" data-hi="समस्या समाधान">Problem Resolution</h4>
+              <p data-en="Complete resolution of the reported issue within 7 days from the date of registration." 
+                 data-hi="पंजीकरण की तारीख से 7 दिनों के भीतर रिपोर्ट की गई समस्या का पूर्ण समाधान।">
+                Complete resolution of the reported issue within 7 days from the date of registration.
+              </p>
+              <div class="highlight" data-en="SLA: 7 Days" data-hi="एसएलए: 7 दिन">SLA: 7 Days</div>
+            </div>
+          </div>
+
+          <div class="sla-card">
+            <div class="sla-icon">⬆️</div>
+            <h3 data-en="Escalation" data-hi="एस्केलेशन">Escalation</h3>
+            <div class="time-display">7 Days</div>
+            <div class="sla-details">
+              <h4 data-en="Escalation Process" data-hi="एस्केलेशन प्रक्रिया">Escalation Process</h4>
+              <p data-en="Automatic escalation to higher authorities if the complaint is not resolved within 7 days." 
+                 data-hi="यदि शिकायत 7 दिनों के भीतर हल नहीं होती है तो उच्च अधिकारियों को स्वचालित एस्केलेशन।">
+                Automatic escalation to higher authorities if the complaint is not resolved within 7 days.
+              </p>
+              <div class="highlight" data-en="SLA: 7 Days" data-hi="एसएलए: 7 दिन">SLA: 7 Days</div>
+            </div>
+          </div>
+
+          <div class="sla-card">
+            <div class="sla-icon">💬</div>
+            <h3 data-en="Feedback" data-hi="प्रतिक्रिया">Feedback</h3>
+            <div class="time-display">1 Month</div>
+            <div class="sla-details">
+              <h4 data-en="User Feedback" data-hi="उपयोगकर्ता प्रतिक्रिया">User Feedback</h4>
+              <p data-en="Collection and analysis of user feedback on resolved complaints within 1 month." 
+                 data-hi="1 महीने के भीतर हल की गई शिकायतों पर उपयोगकर्ता प्रतिक्रिया का संग्रह और विश्लेषण।">
+                Collection and analysis of user feedback on resolved complaints within 1 month.
+              </p>
+              <div class="highlight" data-en="SLA: 1 Month" data-hi="एसएलए: 1 महीना">SLA: 1 Month</div>
+            </div>
+          </div>
+
+          <div class="sla-card compliance-meter">
+            <div class="sla-icon">📊</div>
+            <h3 data-en="Compliance Meter" data-hi="अनुपालन मीटर">Compliance Meter</h3>
+            <div class="time-display">85%</div>
+            <div class="sla-details">
+              <h4 data-en="Compliance Tracker" data-hi="अनुपालन ट्रैकर">Compliance Tracker</h4>
+              <p data-en="Real-time tracking of SLA compliance across all complaint categories and departments." 
+                 data-hi="सभी शिकायत श्रेणियों और विभागों में एसएलए अनुपालन का रीयल-टाइम ट्रैकिंग।">
+                Real-time tracking of SLA compliance across all complaint categories and departments.
+              </p>
+              <div class="highlight" data-en="Current Compliance: 85%" data-hi="वर्तमान अनुपालन: 85%">Current Compliance: 85%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- templates/footer.html -->
+<footer>
+  <div class="footer-content">
+    <h2>AwazGram Village Portal</h2>
+    <p>Your voice matters — complaints, feedback, and updates in one place.</p>
+    <div class="footer-links">
+      <a href="#">Home</a>
+      <a href="#">Report</a>
+      <a href="#">Track</a>
+      <a href="#">Dashboard</a>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 AwazGram. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<link rel="stylesheet" href="{% static 'css/footer.css' %}">
+<script src="{% static 'js/footer.js' %}" defer></script>
+
+    <script src="{% static 'page1/js/script.js' %}"></script>
+  </body>
+</html>

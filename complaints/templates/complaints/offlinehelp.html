@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <title>शिकायत दर्ज करें | Submit Complaint</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        label {
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>शिकायत दर्ज करें</h2>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <label for="name">नाम (Name):</label>
+            <input type="text" name="name" id="name" required>
+
+            <label for="location">स्थान (Location):</label>
+            <input type="text" name="location" id="location" required>
+
+            <label for="issue">समस्या का विवरण (Issue Description):</label>
+            <textarea name="issue" id="issue" rows="4" required></textarea>
+
+            <label for="photo">फोटो अपलोड करें (Upload Photo):</label>
+            <input type="file" name="photo" id="photo" accept="image/*" required>
+
+            <button type="button" onclick="goToSuccessPage()">सबमिट करें</button>
+
+        </form>
+    </div>
+      <script>
+    function goToSuccessPage() {
+      window.location.href = "success.html";
+    }
+  </script>
+
+</body>
+</html>

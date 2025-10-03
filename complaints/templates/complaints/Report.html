@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Capture & Input System</title>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.step {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    display: none;
+}
+
+.step.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+h3 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.camera-container {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+#video {
+    width: 100%;
+    border-radius: 10px;
+    background: #000;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 600;
+    min-width: 140px;
+}
+
+.primary-btn {
+    background: #ff4081;
+    color: white;
+}
+
+.primary-btn:hover {
+    background: #f50057;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 64, 129, 0.6);
+}
+
+.secondary-btn {
+    background: #757575;
+    color: white;
+}
+
+.secondary-btn:hover {
+    background: #616161;
+    transform: translateY(-2px);
+}
+
+.submit-btn {
+    background: #4caf50;
+    color: white;
+}
+
+.submit-btn:hover {
+    background: #388e3c;
+    transform: translateY(-2px);
+}
+
+.voice-btn {
+    background: #ff9800;
+    color: white;
+}
+
+.voice-btn:hover {
+    background: #f57c00;
+    transform: translateY(-2px);
+}
+
+.type-btn {
+    background: #4caf50;
+    color: white;
+}
+
+.speak-btn {
+    background: #2196f3;
+    color: white;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#capturedImage, #reviewImage {
+    width: 100%;
+    border-radius: 10px;
+    max-height: 400px;
+    object-fit: contain;
+    background: #000;
+}
+
+#capturedImage {
+    display: none;
+}
+
+.choice-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+#textInput {
+    width: 100%;
+    height: 120px;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+    margin-top: 15px;
+    resize: vertical;
+}
+
+.speak-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#speakBtn {
+    padding: 15px 30px;
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#speakBtn.listening {
+    background: #f44336;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+#transcript {
+    margin-top: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    min-height: 60px;
+    text-align: left;
+}
+
+.review-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.captured-photo-review, .problem-review {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+#outputText {
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    min-height: 60px;
+}
+
+.status {
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.success {
+    background: rgba(76, 175, 80, 0.3);
+}
+
+.error {
+    background: rgba(244, 67, 54, 0.3);
+}
+
+.hidden {
+    display: none;
+}
+
+.icon {
+    font-size: 1.5rem;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.3rem;
+    }
+    
+    .choice-buttons, .button-group {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    #video, #capturedImage, #reviewImage {
+        max-height: 300px;
+    }
+    
+    .review-section {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 10px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .step {
+        padding: 15px;
+    }
+    
+    #video, #capturedImage, #reviewImage {
+        max-height: 250px;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <h1>🗣️ Please share your issue</h1>
+    
+    <div class="container">
+        <!-- Step 1: Capture Photo -->
+        <div id="step1" class="step active">
+            <h2><span class="icon">📸</span> Step 1: Capture Photo</h2>
+            <div class="camera-container">
+                <video id="video" autoplay playsinline></video>
+                <canvas id="canvas" class="hidden"></canvas>
+                <img id="capturedImage" alt="Captured Image">
+                <div class="button-group">
+                    <button id="captureBtn" class="btn primary-btn">Capture Photo</button>
+                    <button id="retakeBtn" class="btn secondary-btn hidden">Retake Photo</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 2: Input Method Selection -->
+        <div id="step2" class="step">
+            <h2><span class="icon">💬</span> Step 2: How would you like to provide input?</h2>
+            <div class="choice-buttons">
+                <button id="typeBtn" class="btn type-btn">Type</button>
+                <button id="speakChoiceBtn" class="btn speak-btn">Speak</button>
+            </div>
+        </div>
+        
+        <!-- Step 3: Type Input -->
+        <div id="step3" class="step">
+            <h2><span class="icon">⌨️</span> Step 3: Type your problem</h2>
+            <textarea id="textInput" placeholder="Enter your problem here..."></textarea>
+            <div class="button-group">
+                <button id="backToStep2FromType" class="btn secondary-btn">Back</button>
+                <button id="submitTextBtn" class="btn primary-btn">Submit</button>
+            </div>
+        </div>
+        
+        <!-- Step 4: Speak Input -->
+        <div id="step4" class="step">
+            <h2><span class="icon">🎤</span> Step 4: Speak your problem</h2>
+            <div class="speak-container">
+                <button id="speakBtn" class="btn voice-btn">
+                    <span class="icon">🎤</span> Start Speaking
+                </button>
+                <div id="transcript">Your speech will appear here...</div>
+                <div class="button-group">
+                    <button id="backToStep2FromSpeak" class="btn secondary-btn">Back</button>
+                    <button id="submitSpeechBtn" class="btn primary-btn">Submit</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 5: Text-to-Speech Output -->
+        <div id="step5" class="step">
+            <h2><span class="icon">🔊</span> Step 5: Review and Submit</h2>
+            <div class="review-section">
+                <div class="captured-photo-review">
+                    <h3>Captured Photo:</h3>
+                    <img id="reviewImage" alt="Review Image">
+                </div>
+                <div class="problem-review">
+                    <h3>Your Problem:</h3>
+                    <p id="outputText">Your problem description will appear here.</p>
+                </div>
+            </div>
+            <div class="button-group">
+                <button id="playBtn" class="btn voice-btn">Play Voice Message</button>
+                <button id="finalSubmitBtn" class="btn submit-btn">Submit Issue</button>
+            </div>
+            <div id="status" class="status"></div>
+        </div>
+    </div>
+
+    <script >
+        // DOM Elements
+const step1 = document.getElementById('step1');
+const step2 = document.getElementById('step2');
+const step3 = document.getElementById('step3');
+const step4 = document.getElementById('step4');
+const step5 = document.getElementById('step5');
+
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const capturedImage = document.getElementById('capturedImage');
+const reviewImage = document.getElementById('reviewImage');
+const captureBtn = document.getElementById('captureBtn');
+const retakeBtn = document.getElementById('retakeBtn');
+
+const typeBtn = document.getElementById('typeBtn');
+const speakChoiceBtn = document.getElementById('speakChoiceBtn');
+
+const textInput = document.getElementById('textInput');
+const submitTextBtn = document.getElementById('submitTextBtn');
+const backToStep2FromType = document.getElementById('backToStep2FromType');
+
+const speakBtn = document.getElementById('speakBtn');
+const transcript = document.getElementById('transcript');
+const submitSpeechBtn = document.getElementById('submitSpeechBtn');
+const backToStep2FromSpeak = document.getElementById('backToStep2FromSpeak');
+
+const outputText = document.getElementById('outputText');
+const playBtn = document.getElementById('playBtn');
+const finalSubmitBtn = document.getElementById('finalSubmitBtn');
+const status = document.getElementById('status');
+
+// Global variables
+let stream = null;
+let userText = '';
+let capturedImageData = null;
+
+// Step 1: Initialize camera and capture photo
+async function initCamera() {
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({ 
+            video: { facingMode: 'user' } 
+        });
+        video.srcObject = stream;
+    } catch (err) {
+        console.error("Error accessing camera: ", err);
+        showStatus("Error accessing camera. Please check permissions.", "error");
+        // Skip to step 2 if camera is not available
+        setTimeout(() => {
+            step1.classList.remove('active');
+            step2.classList.add('active');
+        }, 2000);
+    }
+}
+
+function capturePhoto() {
+    // Capture image from video stream
+    const context = canvas.getContext('2d');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    // Store image data for review
+    capturedImageData = canvas.toDataURL('image/png');
+    
+    // Display captured image
+    capturedImage.src = capturedImageData;
+    capturedImage.style.display = 'block';
+    video.style.display = 'none';
+    captureBtn.classList.add('hidden');
+    retakeBtn.classList.remove('hidden');
+    
+    // Stop camera stream
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+    }
+    
+    // Move to next step after a delay
+    setTimeout(() => {
+        step1.classList.remove('active');
+        step2.classList.add('active');
+    }, 1000);
+}
+
+function retakePhoto() {
+    // Reset camera view
+    capturedImage.style.display = 'none';
+    video.style.display = 'block';
+    captureBtn.classList.remove('hidden');
+    retakeBtn.classList.add('hidden');
+    
+    // Reinitialize camera
+    initCamera();
+}
+
+// Step 2: Input method selection
+function goToTypeInput() {
+    step2.classList.remove('active');
+    step3.classList.add('active');
+}
+
+function goToSpeakInput() {
+    step2.classList.remove('active');
+    step4.classList.add('active');
+}
+
+function backToStep2() {
+    step3.classList.remove('active');
+    step4.classList.remove('active');
+    step2.classList.add('active');
+}
+
+// Step 3: Text input submission
+function submitText() {
+    userText = textInput.value.trim();
+    if (userText) {
+        proceedToReviewStep();
+    } else {
+        showStatus("Please enter some text before submitting.", "error");
+    }
+}
+
+// Step 4: Speech recognition
+let recognition = null;
+
+// Check if browser supports speech recognition
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US'; // Default to English, can be changed
+    
+    recognition.onstart = function() {
+        speakBtn.classList.add('listening');
+        transcript.textContent = "Listening...";
+    };
+    
+    recognition.onresult = function(event) {
+        const transcriptText = event.results[0][0].transcript;
+        transcript.textContent = transcriptText;
+        userText = transcriptText;
+        speakBtn.classList.remove('listening');
+    };
+    
+    recognition.onerror = function(event) {
+        console.error('Speech recognition error', event.error);
+        transcript.textContent = `Error: ${event.error}`;
+        speakBtn.classList.remove('listening');
+        showStatus("Speech recognition error. Please try again.", "error");
+    };
+    
+    recognition.onend = function() {
+        speakBtn.classList.remove('listening');
+    };
+} else {
+    speakBtn.disabled = true;
+    transcript.textContent = "Speech recognition not supported in this browser.";
+    showStatus("Speech recognition not supported in this browser.", "error");
+}
+
+function startSpeechRecognition() {
+    if (recognition) {
+        recognition.start();
+    }
+}
+
+function submitSpeech() {
+    if (userText) {
+        proceedToReviewStep();
+    } else {
+        showStatus("Please speak your problem before submitting.", "error");
+    }
+}
+
+// Step 5: Review and Text-to-speech
+function proceedToReviewStep() {
+    step3.classList.remove('active');
+    step4.classList.remove('active');
+    step5.classList.add('active');
+    
+    // Set review image and text
+    if (capturedImageData) {
+        reviewImage.src = capturedImageData;
+    }
+    outputText.textContent = userText;
+}
+
+function playVoiceMessage() {
+    if ('speechSynthesis' in window) {
+        // Cancel any ongoing speech
+        speechSynthesis.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance(userText);
+        utterance.rate = 0.9;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+        
+        utterance.onstart = function() {
+            showStatus("Playing audio...", "success");
+            playBtn.disabled = true;
+        };
+        
+        utterance.onend = function() {
+            showStatus("Audio playback completed.", "success");
+            playBtn.disabled = false;
+            setTimeout(() => {
+                status.textContent = "";
+                status.className = "status";
+            }, 3000);
+        };
+        
+        utterance.onerror = function(event) {
+            showStatus("Error playing audio: " + event.error, "error");
+            playBtn.disabled = false;
+        };
+        
+        speechSynthesis.speak(utterance);
+    } else {
+        showStatus("Text-to-speech not supported in this browser.", "error");
+    }
+}
+
+function submitIssue() {
+    // Here you would typically send the data to a server
+    // For now, we'll just show a success message
+    showStatus("Your issue has been submitted successfully!", "success");
+    
+    // Reset form after submission
+    setTimeout(() => {
+        // Reset to step 1
+        step5.classList.remove('active');
+        step1.classList.add('active');
+        
+        // Reset all inputs
+        textInput.value = '';
+        transcript.textContent = 'Your speech will appear here...';
+        userText = '';
+        capturedImageData = null;
+        
+        // Reset camera
+        retakePhoto();
+        
+        // Clear status
+        status.textContent = '';
+        status.className = 'status';
+    }, 3000);
+}
+
+function showStatus(message, type) {
+    status.textContent = message;
+    status.className = `status ${type}`;
+}
+
+// Event Listeners
+captureBtn.addEventListener('click', capturePhoto);
+retakeBtn.addEventListener('click', retakePhoto);
+
+typeBtn.addEventListener('click', goToTypeInput);
+speakChoiceBtn.addEventListener('click', goToSpeakInput);
+
+submitTextBtn.addEventListener('click', submitText);
+backToStep2FromType.addEventListener('click', backToStep2);
+
+speakBtn.addEventListener('click', startSpeechRecognition);
+submitSpeechBtn.addEventListener('click', submitSpeech);
+backToStep2FromSpeak.addEventListener('click', backToStep2);
+
+playBtn.addEventListener('click', playVoiceMessage);
+finalSubmitBtn.addEventListener('click', submitIssue);
+
+// Initialize the application
+window.addEventListener('load', initCamera);
+
+// Handle page visibility change to stop camera when tab is not active
+document.addEventListener('visibilitychange', function() {
+    if (document.hidden && stream) {
+        stream.getTracks().forEach(track => track.stop());
+    }
+});
+    </script>
+</body>
+</html>
