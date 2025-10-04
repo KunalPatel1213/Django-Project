@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Complaint
+from .models import Complaint, AdminProfile
 from django.core.files.base import ContentFile
 import qrcode
 import io
@@ -74,11 +75,11 @@ def user_login(request):
 
         if user is not None:
             login(request, user)
-            return redirect('dashboard')  # Redirect to dashboard after login
+            return redirect('dashboard')
         else:
             messages.error(request, 'यूज़रनेम या पासवर्ड गलत है।')
 
-    return render(request, 'complaints/user.html')  # ✅ Fixed template name
+    return render(request, 'complaints/user.html')
 
 
 # ✅ User Registration View
@@ -96,3 +97,39 @@ def register_view(request):
             return redirect('login')
 
     return render(request, 'complaints/register.html')
+
+
+# ✅ Admin Login View (प्रधान के लिए)
+def admin_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            try:
+                admin_profile = AdminProfile.objects.get(user=user)
+                login(request, user)
+                return redirect('admin_dashboard')
+            except AdminProfile.DoesNotExist:
+                messages.error(request, 'आपके पास प्रशासनिक पहुँच नहीं है।')
+        else:
+            messages.error(request, 'यूज़रनेम या पासवर्ड गलत है।')
+
+    return render(request, 'complaints/admin_login.html')
+
+
+# ✅ Admin Dashboard View (सिर्फ अपने गाँव की complaints)
+@login_required
+def admin_dashboard(request):
+    try:
+        admin_profile = AdminProfile.objects.get(user=request.user)
+        complaints = Complaint.objects.filter(location__iexact=admin_profile.village_name)
+        return render(request, 'complaints/admin_dashboard.html', {
+            'complaints': complaints,
+            'village': admin_profile.village_name
+        })
+    except AdminProfile.DoesNotExist:
+        messages.error(request, 'आपके पास प्रशासनिक पहुँच नहीं है।')
+        return redirect('admin_login')

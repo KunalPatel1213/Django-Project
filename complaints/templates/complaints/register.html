@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>रजिस्टर करें | Register</title>
+  <title>Register</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -71,22 +71,22 @@
 <body>
 
   <div class="register-container">
-    <h2>रजिस्टर करें</h2>
+    <h2>Register</h2>
     <form method="POST" action="{% url 'register' %}">
       {% csrf_token %}
-      <label for="username">यूज़रनेम (Username):</label>
+      <label for="username">Username:</label>
       <input type="text" id="username" name="username" required>
 
-      <label for="email">ईमेल (Email):</label>
+      <label for="email">Email:</label>
       <input type="email" id="email" name="email" required>
 
-      <label for="password">पासवर्ड (Password):</label>
+      <label for="password">Password:</label>
       <input type="password" id="password" name="password" required>
 
-      <button type="submit">रजिस्टर करें</button>
+      <button type="submit">Register</button>
     </form>
     <div class="note">
-      पहले से अकाउंट है? <a href="{% url 'login' %}">लॉगिन करें</a>
+      Already have an account? <a href="{% url 'login' %}">Login</a>
     </div>
   </div>
 

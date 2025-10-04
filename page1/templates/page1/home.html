@@ -47,7 +47,9 @@
             <div class="dropdown-content">
               <a href="{% url 'login' %}" data-en="User Login" data-hi="उपयोगकर्ता लॉगिन">User Login</a>
               <a href="{% url 'register' %}" data-en="Register" data-hi="पंजीकरण">Register</a>
-              <a href="#" data-en="Admin Login" data-hi="एडमिन लॉगिन">Admin Login</a>
+              <a href="{% url 'admin_login' %}" class="lang-toggle" data-en="Admin Login" data-hi="एडमिन लॉगिन">
+  Admin Login
+</a>
             </div>
           </div>
         </div>
@@ -241,7 +243,7 @@
                         </p>
                     </div>
                     <div class="slide-image">
-                        <img src="{% static 'page1/images/Resolution.png' %}" alt="Step 4">
+                        <img src="{% static 'page1/images/Escalation.png' %}" alt="Step 4">
                     </div>
                 </div>
                 <div class="carousel-slide" data-step="5">
@@ -280,7 +282,7 @@
                         </p>
                     </div>
                     <div class="slide-image">
-                        <img src="{% static 'page1/images/step7.png' %}" alt="Step 7">
+                        <img src="{% static 'page1/images/Compliance Tracker.png' %}" alt="Step 7">
                     </div>
                 </div>
             </div>
