@@ -1,3 +1,189 @@
-<h2>✅ Complaint successfully submitted!</h2>
-<p>Thank you, {{ complaint.name }}!</p>
-<img src="{{ complaint.qr_code.url }}" alt="QR Code">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Complaint Successfully Registered</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #27ae60;
+            margin-bottom: 20px;
+        }
+        
+        .complaint-id {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .complaint-id h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .complaint-id .id {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e74c3c;
+            letter-spacing: 2px;
+        }
+        
+        .qr-code {
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .qr-code img {
+            max-width: 200px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .instructions {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .instructions h3 {
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .instructions li:before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .button-group {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">🎉</div>
+        <h1>Complaint Successfully Registered!</h1>
+        
+        {% if complaint %}
+        <div class="complaint-id">
+            <h3>Your Complaint ID:</h3>
+            <div class="id">{{ complaint.complaint_id }}</div>
+            <p>You can check your complaint status using this ID</p>
+        </div>
+
+        {% if complaint.qr_code %}
+        <div class="qr-code">
+            <h3>QR Code</h3>
+            <img src="{{ complaint.qr_code.url }}" alt="QR Code for Complaint {{ complaint.complaint_id }}">
+            <p>Scan this QR code to get complaint information</p>
+        </div>
+        {% endif %}
+
+        <div class="instructions">
+            <h3>Next Steps:</h3>
+            <ul>
+                <li>Keep your Complaint ID safe</li>
+                <li>Take a screenshot of the QR code</li>
+                <li>Your complaint will be verified within 24-48 hours</li>
+                <li>Use the ID to track your complaint status</li>
+            </ul>
+        </div>
+        {% else %}
+        <div class="error-message">
+            <p>Could not load complaint information. Please try again later.</p>
+        </div>
+        {% endif %}
+
+        <div class="button-group">
+            <a href="{% url 'track_complaint' %}?complaint_id={% if complaint %}{{ complaint.complaint_id }}{% endif %}" class="btn btn-primary">
+                🔍 Check Complaint Status
+            </a>
+            <a href="{% url 'report' %}" class="btn btn-secondary">
+                📝 Register New Complaint
+            </a>
+            <a href="{% url 'home' %}" class="btn btn-secondary">
+                🏠 Home Page
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -6,6 +6,147 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AwazGram - Village Development Platform</title>
     <link rel="stylesheet" href="{% static 'page1/css/style.css' %}" />
+    <style>
+      /* Mobile Responsive Additions */
+      @media (max-width: 768px) {
+        .navbar .menu {
+          flex-direction: column;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background: white;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          display: none;
+          z-index: 1000;
+        }
+        
+        .navbar .menu.active {
+          display: flex;
+        }
+        
+        .navbar .menu a, 
+        .navbar .dropdown {
+          width: 100%;
+          text-align: center;
+          padding: 12px;
+          border-bottom: 1px solid #eee;
+        }
+        
+        .dropdown-content {
+          position: static;
+          box-shadow: none;
+          width: 100%;
+        }
+        
+        .hero-content {
+          padding: 20px;
+        }
+        
+        .hero-heading {
+          font-size: 1.8rem;
+        }
+        
+        .hero-subheading {
+          font-size: 1rem;
+        }
+        
+        .about-section {
+          flex-direction: column;
+        }
+        
+        .about-image, 
+        .about-content {
+          width: 100%;
+        }
+        
+        .working-section {
+          flex-direction: column;
+        }
+        
+        .step-indicators {
+          overflow-x: auto;
+          white-space: nowrap;
+          padding-bottom: 10px;
+        }
+        
+        .step {
+          display: inline-block;
+          margin-right: 10px;
+        }
+        
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .sla-dashboard {
+          grid-template-columns: 1fr;
+        }
+        
+        .modal-content {
+          width: 95%;
+          margin: 5% auto;
+        }
+        
+        .image-slider img {
+          height: 200px;
+        }
+        
+        .carousel-slide {
+          flex-direction: column;
+        }
+        
+        .slide-content, 
+        .slide-image {
+          width: 100%;
+        }
+        
+        .footer-content {
+          padding: 20px 15px;
+        }
+        
+        .footer-links {
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
+      
+      @media (max-width: 480px) {
+        .hero-heading {
+          font-size: 1.5rem;
+        }
+        
+        .hero-subheading {
+          font-size: 0.9rem;
+        }
+        
+        .cta-button {
+          padding: 10px 20px;
+          font-size: 0.9rem;
+        }
+        
+        .step {
+          font-size: 0.8rem;
+          padding: 6px 10px;
+        }
+        
+        .feature-box h2 {
+          font-size: 1.1rem;
+        }
+        
+        .sla-card h3 {
+          font-size: 1.1rem;
+        }
+        
+        .loader-title {
+          font-size: 1.5rem;
+        }
+        
+        .timer {
+          font-size: 1rem;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="loader-container">
@@ -157,7 +298,7 @@
             <h2 data-en="How It Works" data-hi="यह कैसे काम करता है">How It Works</h2>
             <p data-en="Just like that — villager reports, QR gets generated, staff verifies, issue resolves, feedback flows, and compliance gets tracked." 
                data-hi="बस ऐसे ही — ग्रामीण रिपोर्ट करते हैं, क्यूआर कोड जनरेट होता है, स्टाफ सत्यापित करता है, समस्या का समाधान होता है, फीडबैक आता है, और अनुपालन ट्रैक किया जाता है।">
-                Just like that — villager reports, QR gets generated, staff verifies,
+                Just like that  villager reports, QR gets generated, staff verifies,
                 issue resolves, feedback flows, and compliance gets tracked.
             </p>
             <div class="step-indicators">
@@ -295,17 +436,17 @@
       <div class="features-grid">
         <div class="feature-box">
           <h2 data-en="📸 Photo Complaint" data-hi="📸 फोटो शिकायत">📸 Photo Complaint</h2>
-          <p data-en="Click photo of the issue and submit it easily — even without internet." 
+          <p data-en="Click photo of the issue and submit it easily  even without internet." 
              data-hi="समस्या की फोटो खींचें और इसे आसानी से सबमिट करें — बिना इंटरनेट के भी।">
-            Click photo of the issue and submit it easily — even without internet.
+            Click photo of the issue and submit it easily  even without internet.
           </p>
         </div>
 
         <div class="feature-box">
           <h2 data-en="🎙️ Voice Note Reporting" data-hi="🎙️ वॉयस नोट रिपोर्टिंग">🎙️ Voice Note Reporting</h2>
-          <p data-en="Speak your complaint instead of typing — perfect for low-literacy users." 
+          <p data-en="Speak your complaint instead of typing  perfect for low-literacy users." 
              data-hi="टाइप करने के बजाय अपनी शिकायत बोलें — कम साक्षरता वाले उपयोगकर्ताओं के लिए आदर्श।">
-            Speak your complaint instead of typing — perfect for low-literacy users.
+            Speak your complaint instead of typing  perfect for low-literacy users.
           </p>
         </div>
 
@@ -319,9 +460,9 @@
 
         <div class="feature-box">
           <h2 data-en="🔳 QR Code Ticket" data-hi="🔳 क्यूआर कोड टिकट">🔳 QR Code Ticket</h2>
-          <p data-en="Each complaint gets a QR code — show it at Panchayat for verification." 
+          <p data-en="Each complaint gets a QR code  show it at Panchayat for verification." 
              data-hi="प्रत्येक शिकायत को एक क्यूआर कोड मिलता है — सत्यापन के लिए इसे पंचायत में दिखाएं।">
-            Each complaint gets a QR code — show it at Panchayat for verification.
+            Each complaint gets a QR code  show it at Panchayat for verification.
           </p>
         </div>
 
@@ -335,9 +476,9 @@
 
         <div class="feature-box">
           <h2 data-en="🔁 Repeat Detection" data-hi="🔁 पुनरावृत्ति पहचान">🔁 Repeat Detection</h2>
-          <p data-en="System highlights issues that keep coming back — for better planning." 
+          <p data-en="System highlights issues that keep coming back  for better planning." 
              data-hi="सिस्टम उन समस्याओं को हाइलाइट करता है जो बार-बार आती हैं — बेहतर योजना के लिए।">
-            System highlights issues that keep coming back — for better planning.
+            System highlights issues that keep coming back  for better planning.
           </p>
         </div>
       </div>
@@ -353,9 +494,9 @@
               AwazGram's grievance system operates based on the number of complaints resolved by the Panchayat, with strict adherence to Service Level Agreements (SLAs) and a focus on the emotional satisfaction of the complainant. Each complaint is prioritized according to its category and urgency. Most grievances are registered instantly through photo or voice note, and action is typically initiated within 24–48 hours of local synchronization.
             </p>
 
-            <p data-en="The system includes a detailed escalation flow — if a complaint is not resolved within 7 days, it is automatically escalated to the Block-level authority for further action. Every complaint is backed by a QR code for verification, and its status is updated on the dashboard as: Pending, Verified, Resolved, or Escalated." 
+            <p data-en="The system includes a detailed escalation flow  if a complaint is not resolved within 7 days, it is automatically escalated to the Block-level authority for further action. Every complaint is backed by a QR code for verification, and its status is updated on the dashboard as: Pending, Verified, Resolved, or Escalated." 
                data-hi="सिस्टम में एक विस्तृत एस्केलेशन फ्लो शामिल है — यदि कोई शिकायत 7 दिनों के भीतर हल नहीं होती है, तो इसे आगे की कार्रवाई के लिए स्वचालित रूप से ब्लॉक-स्तरीय प्राधिकारी को एस्केलेट कर दिया जाता है। प्रत्येक शिकायत सत्यापन के लिए एक क्यूआर कोड द्वारा समर्थित होती है, और इसकी स्थिति डैशबोर्ड पर अपडेट की जाती है: लंबित, सत्यापित, हल, या एस्केलेटेड।">
-              The system includes a detailed escalation flow — if a complaint is not resolved within 7 days, it is automatically escalated to the Block-level authority for further action. Every complaint is backed by a QR code for verification, and its status is updated on the dashboard as: Pending, Verified, Resolved, or Escalated.
+              The system includes a detailed escalation flow  if a complaint is not resolved within 7 days, it is automatically escalated to the Block-level authority for further action. Every complaint is backed by a QR code for verification, and its status is updated on the dashboard as: Pending, Verified, Resolved, or Escalated.
             </p>
           </div>
         </header>
@@ -454,7 +595,7 @@
 <footer>
   <div class="footer-content">
     <h2>AwazGram Village Portal</h2>
-    <p>Your voice matters — complaints, feedback, and updates in one place.</p>
+    <p>Your voice matters  complaints, feedback, and updates in one place.</p>
     <div class="footer-links">
       <a href="#">Home</a>
       <a href="#">Report</a>

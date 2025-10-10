@@ -3,686 +3,523 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Capture & Input System</title>
+    <title>AwazGram - Register Complaint</title>
     <style>
         * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+        }
 
-body {
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-    color: #fff;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-}
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-.container {
-    max-width: 800px;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    margin-top: 20px;
-}
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
 
-h1 {
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 2.5rem;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-.step {
-    margin-bottom: 30px;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 15px;
-    display: none;
-}
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
 
-.step.active {
-    display: block;
-    animation: fadeIn 0.5s ease;
-}
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+        .complaint-form {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border: 2px dashed #dee2e6;
+        }
 
-h2 {
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-h3 {
-    margin-bottom: 10px;
-    font-size: 1.2rem;
-}
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
 
-.camera-container {
-    position: relative;
-    width: 100%;
-    max-width: 640px;
-    margin: 0 auto;
-}
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
 
-#video {
-    width: 100%;
-    border-radius: 10px;
-    background: #000;
-    max-height: 400px;
-    object-fit: cover;
-}
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            outline: none;
+        }
 
-.button-group {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-}
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
 
-.btn {
-    padding: 12px 25px;
-    border: none;
-    border-radius: 50px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    font-weight: 600;
-    min-width: 140px;
-}
+        .photo-upload {
+            border: 2px dashed #667eea;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            background: #f8f9ff;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
 
-.primary-btn {
-    background: #ff4081;
-    color: white;
-}
+        .photo-upload:hover {
+            background: #eef2ff;
+            border-color: #5a67d8;
+        }
 
-.primary-btn:hover {
-    background: #f50057;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 64, 129, 0.6);
-}
+        .photo-preview {
+            margin-top: 15px;
+            text-align: center;
+        }
 
-.secondary-btn {
-    background: #757575;
-    color: white;
-}
+        .photo-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
 
-.secondary-btn:hover {
-    background: #616161;
-    transform: translateY(-2px);
-}
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
 
-.submit-btn {
-    background: #4caf50;
-    color: white;
-}
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 100%;
+        }
 
-.submit-btn:hover {
-    background: #388e3c;
-    transform: translateY(-2px);
-}
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
 
-.voice-btn {
-    background: #ff9800;
-    color: white;
-}
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            margin-right: 10px;
+        }
 
-.voice-btn:hover {
-    background: #f57c00;
-    transform: translateY(-2px);
-}
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
 
-.type-btn {
-    background: #4caf50;
-    color: white;
-}
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
 
-.speak-btn {
-    background: #2196f3;
-    color: white;
-}
+        .required {
+            color: #e74c3c;
+        }
 
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
+        .camera-section {
+            margin-bottom: 20px;
+        }
 
-#capturedImage, #reviewImage {
-    width: 100%;
-    border-radius: 10px;
-    max-height: 400px;
-    object-fit: contain;
-    background: #000;
-}
+        #video {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 8px;
+            background: #000;
+        }
 
-#capturedImage {
-    display: none;
-}
+        .camera-controls {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
 
-.choice-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-}
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
 
-#textInput {
-    width: 100%;
-    height: 120px;
-    padding: 15px;
-    border-radius: 10px;
-    border: none;
-    font-size: 1rem;
-    margin-top: 15px;
-    resize: vertical;
-}
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
 
-.speak-container {
-    text-align: center;
-    margin-top: 20px;
-}
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
 
-#speakBtn {
-    padding: 15px 30px;
-    margin: 15px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
 
-#speakBtn.listening {
-    background: #f44336;
-    animation: pulse 1.5s infinite;
-}
+        .step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #ddd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+            color: #666;
+        }
 
-#transcript {
-    margin-top: 15px;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    min-height: 60px;
-    text-align: left;
-}
+        .step.active .step-number {
+            background: #667eea;
+            color: white;
+        }
 
-.review-section {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-bottom: 20px;
-}
+        .step-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
 
-.captured-photo-review, .problem-review {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 15px;
-    border-radius: 10px;
-}
+        .step.active .step-label {
+            color: #667eea;
+            font-weight: 600;
+        }
 
-#outputText {
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    min-height: 60px;
-}
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
 
-.status {
-    text-align: center;
-    margin-top: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    font-weight: 500;
-}
+            .header h1 {
+                font-size: 2rem;
+            }
 
-.success {
-    background: rgba(76, 175, 80, 0.3);
-}
+            .button-group {
+                flex-direction: column;
+            }
 
-.error {
-    background: rgba(244, 67, 54, 0.3);
-}
+            .btn {
+                width: 100%;
+            }
+        }
 
-.hidden {
-    display: none;
-}
+        .language-toggle {
+            text-align: right;
+            margin-bottom: 15px;
+        }
 
-.icon {
-    font-size: 1.5rem;
-}
+        .lang-btn {
+            background: none;
+            border: 1px solid #667eea;
+            color: #667eea;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
 
-/* Mobile Responsive Styles */
-@media (max-width: 768px) {
-    .container {
-        padding: 15px;
-    }
-    
-    h1 {
-        font-size: 2rem;
-    }
-    
-    h2 {
-        font-size: 1.3rem;
-    }
-    
-    .choice-buttons, .button-group {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .btn {
-        width: 100%;
-        max-width: 300px;
-    }
-    
-    #video, #capturedImage, #reviewImage {
-        max-height: 300px;
-    }
-    
-    .review-section {
-        flex-direction: column;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
-    
-    .container {
-        padding: 10px;
-    }
-    
-    h1 {
-        font-size: 1.8rem;
-    }
-    
-    .step {
-        padding: 15px;
-    }
-    
-    #video, #capturedImage, #reviewImage {
-        max-height: 250px;
-    }
-    
-    .btn {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-    }
-}
+        .lang-btn.active {
+            background: #667eea;
+            color: white;
+        }
     </style>
 </head>
 <body>
-    <h1>🗣️ Please share your issue</h1>
-    
     <div class="container">
-        <!-- Step 1: Capture Photo -->
-        <div id="step1" class="step active">
-            <h2><span class="icon">📸</span> Step 1: Capture Photo</h2>
-            <div class="camera-container">
+        <div class="header">
+            <h1>🗣️ Register Complaint</h1>
+            <p>Tell us your problem - We will help you</p>
+        </div>
+
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <div class="step active">
+                <div class="step-number">1</div>
+                <div class="step-label">Fill Information</div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-label">Upload Photo</div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-label">Review</div>
+            </div>
+        </div>
+
+        <!-- Status Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="status-message {% if message.tags %}status-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data" class="complaint-form" id="complaintForm">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="name">Your Name <span class="required">*</span></label>
+                <input type="text" id="name" name="name" class="form-control" 
+                       placeholder="Enter your full name" required
+                       value="{{ request.POST.name }}">
+            </div>
+
+            <div class="form-group">
+                <label for="location">Your Village/Location <span class="required">*</span></label>
+                <input type="text" id="location" name="location" class="form-control" 
+                       placeholder="Enter village name or address" required
+                       value="{{ request.POST.location }}">
+            </div>
+
+            <div class="form-group">
+                <label for="issue">Problem Description <span class="required">*</span></label>
+                <textarea id="issue" name="issue" class="form-control" 
+                         placeholder="Enter detailed description of your problem..." 
+                         required>{{ request.POST.issue }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Additional Information (Optional)</label>
+                <textarea id="description" name="description" class="form-control" 
+                         placeholder="Any additional information or suggestions...">{{ request.POST.description }}</textarea>
+            </div>
+
+            <!-- Photo Upload Section -->
+            <div class="form-group">
+                <label>Problem Photo <span class="required">*</span></label>
+                <div class="photo-upload" onclick="document.getElementById('photo').click()">
+                    <input type="file" id="photo" name="photo" accept="image/*" 
+                           style="display: none;" required onchange="previewImage(this)">
+                    <div style="font-size: 3rem;">📷</div>
+                    <p>Click to upload photo</p>
+                    <small>JPEG, PNG - Maximum 5MB</small>
+                </div>
+                <div class="photo-preview" id="photoPreview"></div>
+            </div>
+
+            <!-- Camera Section (Optional) -->
+            <div class="camera-section" id="cameraSection" style="display: none;">
+                <label>Take Photo with Camera</label>
                 <video id="video" autoplay playsinline></video>
-                <canvas id="canvas" class="hidden"></canvas>
-                <img id="capturedImage" alt="Captured Image">
-                <div class="button-group">
-                    <button id="captureBtn" class="btn primary-btn">Capture Photo</button>
-                    <button id="retakeBtn" class="btn secondary-btn hidden">Retake Photo</button>
+                <div class="camera-controls">
+                    <button type="button" class="btn btn-secondary" onclick="capturePhoto()">Take Photo</button>
+                    <button type="button" class="btn btn-secondary" onclick="stopCamera()">Close Camera</button>
                 </div>
+                <canvas id="canvas" style="display: none;"></canvas>
             </div>
-        </div>
-        
-        <!-- Step 2: Input Method Selection -->
-        <div id="step2" class="step">
-            <h2><span class="icon">💬</span> Step 2: How would you like to provide input?</h2>
-            <div class="choice-buttons">
-                <button id="typeBtn" class="btn type-btn">Type</button>
-                <button id="speakChoiceBtn" class="btn speak-btn">Speak</button>
-            </div>
-        </div>
-        
-        <!-- Step 3: Type Input -->
-        <div id="step3" class="step">
-            <h2><span class="icon">⌨️</span> Step 3: Type your problem</h2>
-            <textarea id="textInput" placeholder="Enter your problem here..."></textarea>
-            <div class="button-group">
-                <button id="backToStep2FromType" class="btn secondary-btn">Back</button>
-                <button id="submitTextBtn" class="btn primary-btn">Submit</button>
-            </div>
-        </div>
-        
-        <!-- Step 4: Speak Input -->
-        <div id="step4" class="step">
-            <h2><span class="icon">🎤</span> Step 4: Speak your problem</h2>
-            <div class="speak-container">
-                <button id="speakBtn" class="btn voice-btn">
-                    <span class="icon">🎤</span> Start Speaking
+
+            <div class="form-group">
+                <button type="button" class="btn btn-secondary" onclick="toggleCamera()">
+                    📸 Take Photo with Camera
                 </button>
-                <div id="transcript">Your speech will appear here...</div>
-                <div class="button-group">
-                    <button id="backToStep2FromSpeak" class="btn secondary-btn">Back</button>
-                    <button id="submitSpeechBtn" class="btn primary-btn">Submit</button>
-                </div>
             </div>
-        </div>
-        
-        <!-- Step 5: Text-to-Speech Output -->
-        <div id="step5" class="step">
-            <h2><span class="icon">🔊</span> Step 5: Review and Submit</h2>
-            <div class="review-section">
-                <div class="captured-photo-review">
-                    <h3>Captured Photo:</h3>
-                    <img id="reviewImage" alt="Review Image">
-                </div>
-                <div class="problem-review">
-                    <h3>Your Problem:</h3>
-                    <p id="outputText">Your problem description will appear here.</p>
-                </div>
-            </div>
+
             <div class="button-group">
-                <button id="playBtn" class="btn voice-btn">Play Voice Message</button>
-                <button id="finalSubmitBtn" class="btn submit-btn">Submit Issue</button>
+                <button type="button" class="btn btn-secondary" onclick="clearForm()">
+                    ❌ Clear Form
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    ✅ Register Complaint
+                </button>
             </div>
-            <div id="status" class="status"></div>
+        </form>
+
+        <!-- Quick Links -->
+        <div style="text-align: center; margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+            <h3>Other Options</h3>
+            <div style="margin-top: 15px;">
+                <a href="{% url 'track_complaint' %}" style="margin: 0 10px; color: #667eea; text-decoration: none;">
+                    🔍 Check Complaint Status
+                </a>
+                <a href="{% url 'dashboard' %}" style="margin: 0 10px; color: #667eea; text-decoration: none;">
+                    📊 View Dashboard
+                </a>
+                <a href="{% url 'offline_help' %}" style="margin: 0 10px; color: #667eea; text-decoration: none;">
+                    ℹ️ Offline Help
+                </a>
+            </div>
         </div>
     </div>
 
-    <script >
-        // DOM Elements
-const step1 = document.getElementById('step1');
-const step2 = document.getElementById('step2');
-const step3 = document.getElementById('step3');
-const step4 = document.getElementById('step4');
-const step5 = document.getElementById('step5');
+    <script>
+        // Image preview function
+        function previewImage(input) {
+            const preview = document.getElementById('photoPreview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
-const video = document.getElementById('video');
-const canvas = document.getElementById('canvas');
-const capturedImage = document.getElementById('capturedImage');
-const reviewImage = document.getElementById('reviewImage');
-const captureBtn = document.getElementById('captureBtn');
-const retakeBtn = document.getElementById('retakeBtn');
+        // Camera functionality
+        let stream = null;
 
-const typeBtn = document.getElementById('typeBtn');
-const speakChoiceBtn = document.getElementById('speakChoiceBtn');
+        async function toggleCamera() {
+            const cameraSection = document.getElementById('cameraSection');
+            if (cameraSection.style.display === 'none') {
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    document.getElementById('video').srcObject = stream;
+                    cameraSection.style.display = 'block';
+                } catch (err) {
+                    alert('Camera access error: ' + err.message);
+                }
+            } else {
+                stopCamera();
+            }
+        }
 
-const textInput = document.getElementById('textInput');
-const submitTextBtn = document.getElementById('submitTextBtn');
-const backToStep2FromType = document.getElementById('backToStep2FromType');
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+            document.getElementById('cameraSection').style.display = 'none';
+        }
 
-const speakBtn = document.getElementById('speakBtn');
-const transcript = document.getElementById('transcript');
-const submitSpeechBtn = document.getElementById('submitSpeechBtn');
-const backToStep2FromSpeak = document.getElementById('backToStep2FromSpeak');
+        function capturePhoto() {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
 
-const outputText = document.getElementById('outputText');
-const playBtn = document.getElementById('playBtn');
-const finalSubmitBtn = document.getElementById('finalSubmitBtn');
-const status = document.getElementById('status');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-// Global variables
-let stream = null;
-let userText = '';
-let capturedImageData = null;
+            // Convert canvas to blob and create file input
+            canvas.toBlob(function(blob) {
+                const file = new File([blob], 'camera_photo.jpg', { type: 'image/jpeg' });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                
+                const photoInput = document.getElementById('photo');
+                photoInput.files = dataTransfer.files;
+                
+                // Show preview
+                previewImage(photoInput);
+                
+                // Stop camera after capture
+                stopCamera();
+            }, 'image/jpeg');
+        }
 
-// Step 1: Initialize camera and capture photo
-async function initCamera() {
-    try {
-        stream = await navigator.mediaDevices.getUserMedia({ 
-            video: { facingMode: 'user' } 
+        // Clear form function
+        function clearForm() {
+            if (confirm('Are you sure you want to clear the form?')) {
+                document.getElementById('complaintForm').reset();
+                document.getElementById('photoPreview').innerHTML = '';
+                stopCamera();
+            }
+        }
+
+        // Form validation
+        document.getElementById('complaintForm').addEventListener('submit', function(e) {
+            const name = document.getElementById('name').value.trim();
+            const location = document.getElementById('location').value.trim();
+            const issue = document.getElementById('issue').value.trim();
+            const photo = document.getElementById('photo').files[0];
+
+            if (!name || !location || !issue || !photo) {
+                e.preventDefault();
+                alert('Please fill all required fields!');
+                return false;
+            }
+
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '⏳ Registering...';
+            submitBtn.disabled = true;
         });
-        video.srcObject = stream;
-    } catch (err) {
-        console.error("Error accessing camera: ", err);
-        showStatus("Error accessing camera. Please check permissions.", "error");
-        // Skip to step 2 if camera is not available
-        setTimeout(() => {
-            step1.classList.remove('active');
-            step2.classList.add('active');
-        }, 2000);
-    }
-}
 
-function capturePhoto() {
-    // Capture image from video stream
-    const context = canvas.getContext('2d');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    
-    // Store image data for review
-    capturedImageData = canvas.toDataURL('image/png');
-    
-    // Display captured image
-    capturedImage.src = capturedImageData;
-    capturedImage.style.display = 'block';
-    video.style.display = 'none';
-    captureBtn.classList.add('hidden');
-    retakeBtn.classList.remove('hidden');
-    
-    // Stop camera stream
-    if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-    }
-    
-    // Move to next step after a delay
-    setTimeout(() => {
-        step1.classList.remove('active');
-        step2.classList.add('active');
-    }, 1000);
-}
+        // Auto-save form data to localStorage
+        function autoSaveForm() {
+            const formData = {
+                name: document.getElementById('name').value,
+                location: document.getElementById('location').value,
+                issue: document.getElementById('issue').value,
+                description: document.getElementById('description').value
+            };
+            localStorage.setItem('complaintFormData', JSON.stringify(formData));
+        }
 
-function retakePhoto() {
-    // Reset camera view
-    capturedImage.style.display = 'none';
-    video.style.display = 'block';
-    captureBtn.classList.remove('hidden');
-    retakeBtn.classList.add('hidden');
-    
-    // Reinitialize camera
-    initCamera();
-}
+        // Load saved form data
+        function loadSavedForm() {
+            const savedData = localStorage.getItem('complaintFormData');
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                document.getElementById('name').value = formData.name || '';
+                document.getElementById('location').value = formData.location || '';
+                document.getElementById('issue').value = formData.issue || '';
+                document.getElementById('description').value = formData.description || '';
+            }
+        }
 
-// Step 2: Input method selection
-function goToTypeInput() {
-    step2.classList.remove('active');
-    step3.classList.add('active');
-}
+        // Add event listeners for auto-save
+        document.getElementById('name').addEventListener('input', autoSaveForm);
+        document.getElementById('location').addEventListener('input', autoSaveForm);
+        document.getElementById('issue').addEventListener('input', autoSaveForm);
+        document.getElementById('description').addEventListener('input', autoSaveForm);
 
-function goToSpeakInput() {
-    step2.classList.remove('active');
-    step4.classList.add('active');
-}
+        // Load saved data on page load
+        window.addEventListener('load', loadSavedForm);
 
-function backToStep2() {
-    step3.classList.remove('active');
-    step4.classList.remove('active');
-    step2.classList.add('active');
-}
-
-// Step 3: Text input submission
-function submitText() {
-    userText = textInput.value.trim();
-    if (userText) {
-        proceedToReviewStep();
-    } else {
-        showStatus("Please enter some text before submitting.", "error");
-    }
-}
-
-// Step 4: Speech recognition
-let recognition = null;
-
-// Check if browser supports speech recognition
-if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.lang = 'en-US'; // Default to English, can be changed
-    
-    recognition.onstart = function() {
-        speakBtn.classList.add('listening');
-        transcript.textContent = "Listening...";
-    };
-    
-    recognition.onresult = function(event) {
-        const transcriptText = event.results[0][0].transcript;
-        transcript.textContent = transcriptText;
-        userText = transcriptText;
-        speakBtn.classList.remove('listening');
-    };
-    
-    recognition.onerror = function(event) {
-        console.error('Speech recognition error', event.error);
-        transcript.textContent = `Error: ${event.error}`;
-        speakBtn.classList.remove('listening');
-        showStatus("Speech recognition error. Please try again.", "error");
-    };
-    
-    recognition.onend = function() {
-        speakBtn.classList.remove('listening');
-    };
-} else {
-    speakBtn.disabled = true;
-    transcript.textContent = "Speech recognition not supported in this browser.";
-    showStatus("Speech recognition not supported in this browser.", "error");
-}
-
-function startSpeechRecognition() {
-    if (recognition) {
-        recognition.start();
-    }
-}
-
-function submitSpeech() {
-    if (userText) {
-        proceedToReviewStep();
-    } else {
-        showStatus("Please speak your problem before submitting.", "error");
-    }
-}
-
-// Step 5: Review and Text-to-speech
-function proceedToReviewStep() {
-    step3.classList.remove('active');
-    step4.classList.remove('active');
-    step5.classList.add('active');
-    
-    // Set review image and text
-    if (capturedImageData) {
-        reviewImage.src = capturedImageData;
-    }
-    outputText.textContent = userText;
-}
-
-function playVoiceMessage() {
-    if ('speechSynthesis' in window) {
-        // Cancel any ongoing speech
-        speechSynthesis.cancel();
-        
-        const utterance = new SpeechSynthesisUtterance(userText);
-        utterance.rate = 0.9;
-        utterance.pitch = 1;
-        utterance.volume = 1;
-        
-        utterance.onstart = function() {
-            showStatus("Playing audio...", "success");
-            playBtn.disabled = true;
-        };
-        
-        utterance.onend = function() {
-            showStatus("Audio playback completed.", "success");
-            playBtn.disabled = false;
-            setTimeout(() => {
-                status.textContent = "";
-                status.className = "status";
-            }, 3000);
-        };
-        
-        utterance.onerror = function(event) {
-            showStatus("Error playing audio: " + event.error, "error");
-            playBtn.disabled = false;
-        };
-        
-        speechSynthesis.speak(utterance);
-    } else {
-        showStatus("Text-to-speech not supported in this browser.", "error");
-    }
-}
-
-function submitIssue() {
-    // Here you would typically send the data to a server
-    // For now, we'll just show a success message
-    showStatus("Your issue has been submitted successfully!", "success");
-    
-    // Reset form after submission
-    setTimeout(() => {
-        // Reset to step 1
-        step5.classList.remove('active');
-        step1.classList.add('active');
-        
-        // Reset all inputs
-        textInput.value = '';
-        transcript.textContent = 'Your speech will appear here...';
-        userText = '';
-        capturedImageData = null;
-        
-        // Reset camera
-        retakePhoto();
-        
-        // Clear status
-        status.textContent = '';
-        status.className = 'status';
-    }, 3000);
-}
-
-function showStatus(message, type) {
-    status.textContent = message;
-    status.className = `status ${type}`;
-}
-
-// Event Listeners
-captureBtn.addEventListener('click', capturePhoto);
-retakeBtn.addEventListener('click', retakePhoto);
-
-typeBtn.addEventListener('click', goToTypeInput);
-speakChoiceBtn.addEventListener('click', goToSpeakInput);
-
-submitTextBtn.addEventListener('click', submitText);
-backToStep2FromType.addEventListener('click', backToStep2);
-
-speakBtn.addEventListener('click', startSpeechRecognition);
-submitSpeechBtn.addEventListener('click', submitSpeech);
-backToStep2FromSpeak.addEventListener('click', backToStep2);
-
-playBtn.addEventListener('click', playVoiceMessage);
-finalSubmitBtn.addEventListener('click', submitIssue);
-
-// Initialize the application
-window.addEventListener('load', initCamera);
-
-// Handle page visibility change to stop camera when tab is not active
-document.addEventListener('visibilitychange', function() {
-    if (document.hidden && stream) {
-        stream.getTracks().forEach(track => track.stop());
-    }
-});
+        // Clear saved data on successful submission
+        window.addEventListener('beforeunload', function() {
+            if (window.performance.navigation.type === 1) { // Page reload
+                localStorage.removeItem('complaintFormData');
+            }
+        });
     </script>
 </body>
 </html>

@@ -2,80 +2,352 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Submit Complaint</title>
+    <title>Register Complaint</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
             padding: 20px;
         }
+        
         .container {
             max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
+        
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+        
         input, textarea {
             width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
         }
-        label {
-            font-weight: bold;
+        
+        input:focus, textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            outline: none;
         }
-        .error {
-            color: red;
-            margin-bottom: 10px;
+        
+        textarea {
+            resize: vertical;
+            min-height: 120px;
         }
-        button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
+        
+        .photo-upload {
+            border: 2px dashed #667eea;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            background: #f8f9ff;
             cursor: pointer;
+            transition: all 0.3s;
         }
-        button:hover {
-            background-color: #0056b3;
+        
+        .photo-upload:hover {
+            background: #eef2ff;
+            border-color: #5a67d8;
+        }
+        
+        .photo-preview {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .photo-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #667eea;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Submit Complaint</h2>
+        <h2>🗣️ Register Complaint</h2>
 
-        {% if error %}
-            <div class="error">{{ error }}</div>
+        <!-- Status Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="status-message {% if message.tags %}status-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
         {% endif %}
 
-        <form method="POST" enctype="multipart/form-data">
+        {% if error %}
+            <div class="status-message status-error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data" id="complaintForm">
             {% csrf_token %}
             
-            <label for="name">Name:</label>
-            <input type="text" name="name" id="name" required>
+            <div class="form-group">
+                <label for="name">Your Name <span class="required">*</span></label>
+                <input type="text" name="name" id="name" placeholder="Enter your full name" required>
+            </div>
 
-            <label for="location">Location:</label>
-            <input type="text" name="location" id="location" required>
+            <div class="form-group">
+                <label for="location">Your Village/Location <span class="required">*</span></label>
+                <input type="text" name="location" id="location" placeholder="Enter village name or address" required>
+            </div>
 
-            <label for="issue">Issue Description:</label>
-            <textarea name="issue" id="issue" rows="4" required></textarea>
+            <div class="form-group">
+                <label for="issue">Problem Description <span class="required">*</span></label>
+                <textarea name="issue" id="issue" placeholder="Enter detailed description of your problem..." required></textarea>
+            </div>
 
-            <label for="photo">Upload Photo:</label>
-            <input type="file" name="photo" id="photo" accept="image/*" required>
+            <div class="form-group">
+                <label for="photo">Problem Photo <span class="required">*</span></label>
+                <div class="photo-upload" onclick="document.getElementById('photo').click()">
+                    <input type="file" id="photo" name="photo" accept="image/*" style="display: none;" required onchange="previewImage(this)">
+                    <div style="font-size: 3rem;">📷</div>
+                    <p>Click to upload photo</p>
+                    <small>JPEG, PNG - Maximum 5MB</small>
+                </div>
+                <div class="photo-preview" id="photoPreview"></div>
+            </div>
 
-            <button type="button" onclick="goToSuccessPage()">Submit</button>
+            <!-- Loading Indicator -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Registering complaint... Please wait</p>
+            </div>
 
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+                ✅ Register Complaint
+            </button>
         </form>
+
+        <!-- Quick Links -->
+        <div style="text-align: center; margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+            <h3>Other Options</h3>
+            <div style="margin-top: 15px;">
+                <a href="{% url 'track_complaint' %}" style="margin: 0 10px; color: #667eea; text-decoration: none;">
+                    🔍 Check Complaint Status
+                </a>
+                <a href="{% url 'dashboard' %}" style="margin: 0 10px; color: #667eea; text-decoration: none;">
+                    📊 View Dashboard
+                </a>
+                <a href="{% url 'home' %}" style="margin: 0 10px; color: #667eea; text-decoration: none;">
+                    🏠 Home Page
+                </a>
+            </div>
+        </div>
     </div>
+
     <script>
-        function goToSuccessPage() {
-            window.location.href = "success.html";
+        // Image preview function
+        function previewImage(input) {
+            const preview = document.getElementById('photoPreview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Form submission handling
+        document.getElementById('complaintForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const location = document.getElementById('location').value.trim();
+            const issue = document.getElementById('issue').value.trim();
+            const photo = document.getElementById('photo').files[0];
+
+            // Validation
+            if (!name || !location || !issue || !photo) {
+                alert('Please fill all required fields!');
+                return false;
+            }
+
+            // File size validation (5MB limit)
+            if (photo.size > 5 * 1024 * 1024) {
+                alert('Photo size must be less than 5MB!');
+                return false;
+            }
+
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '⏳ Processing...';
+            loading.style.display = 'block';
+
+            // Submit the form
+            this.submit();
+        });
+
+        // Auto-save form data to localStorage
+        function autoSaveForm() {
+            const formData = {
+                name: document.getElementById('name').value,
+                location: document.getElementById('location').value,
+                issue: document.getElementById('issue').value
+            };
+            localStorage.setItem('complaintFormData', JSON.stringify(formData));
+        }
+
+        // Load saved form data
+        function loadSavedForm() {
+            const savedData = localStorage.getItem('complaintFormData');
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                document.getElementById('name').value = formData.name || '';
+                document.getElementById('location').value = formData.location || '';
+                document.getElementById('issue').value = formData.issue || '';
+            }
+        }
+
+        // Clear saved data on successful submission
+        function clearSavedData() {
+            localStorage.removeItem('complaintFormData');
+        }
+
+        // Add event listeners for auto-save
+        document.getElementById('name').addEventListener('input', autoSaveForm);
+        document.getElementById('location').addEventListener('input', autoSaveForm);
+        document.getElementById('issue').addEventListener('input', autoSaveForm);
+
+        // Load saved data on page load
+        window.addEventListener('load', loadSavedForm);
+
+        // Clear saved data when leaving page if form was submitted
+        window.addEventListener('beforeunload', function() {
+            // Check if we're going to success page
+            if (window.performance.navigation.type === 0) { // Normal navigation
+                const submitBtn = document.getElementById('submitBtn');
+                if (submitBtn.disabled) {
+                    clearSavedData();
+                }
+            }
+        });
+
+        // Prevent form resubmission on page refresh
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
         }
     </script>
-
 </body>
 </html>
